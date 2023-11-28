@@ -13,7 +13,7 @@ app.use(cors(
 ));
 app.use(express.json())
 
-mongoose.connect('ONGODB_URI=mongodb+srv://alikhan:admin@cluster0.vgmtjfz.mongodb.net/game?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://alikhan:admin@cluster0.vgmtjfz.mongodb.net/game?retryWrites=true&w=majority');
 
 
 app.get("/", (req, res) => {
