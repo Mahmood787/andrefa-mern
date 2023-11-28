@@ -1,8 +1,12 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const RegisterModel = require('./models/Register')
-
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import connectDB from './config/db.js';
+import userRoutes from './routes/userRoutes.js';
+import cookieParser from 'cookie-parser';
+const port = process.env.PORT || 5000;
+dotenv.config();
+connectDB();
 const app = express()
 app.use(cors(
     {
@@ -12,28 +16,29 @@ app.use(cors(
     }
 ));
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb+srv://alikhan:admin@cluster0.vgmtjfz.mongodb.net/game?retryWrites=true&w=majority');
-
-
-app.get("/", (req, res) => {
-    res.json("Hello");
-})
-app.post('/register', (req, res) => {
-    const {name, email, password} = req.body;
-    RegisterModel.findOne({email: email})
-    .then(user => {
-        if(user) {
-            res.json("Already have an account")
-        } else {
-            RegisterModel.create({name: name, email: email, password: password})
-            .then(result => res.json(result))
-            .catch(err => res.json(err))
-        }
-    }).catch(err => res.json(err))
-})
+app.use(cookieParser());
+app.use('/api/users', userRoutes);
 
 
-app.listen(3001, () => {
-    console.log("Server is Running")
-})
+// app.get("/", (req, res) => {
+//     res.json("Hello");
+// })
+
+// app.post('/register', (req, res) => {
+//     const {name, email, password} = req.body;
+//     RegisterModel.findOne({email: email})
+//     .then(user => {
+//         if(user) {
+//             res.json("Already have an account")
+//         } else {
+//             RegisterModel.create({name: name, email: email, password: password})
+//             .then(result => res.json(result))
+//             .catch(err => res.json(err))
+//         }
+//     }).catch(err => res.json(err))
+// })
+
+
+app.listen(port, () => console.log(`Server started on port ${port}`));
