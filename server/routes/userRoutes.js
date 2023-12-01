@@ -6,6 +6,7 @@ import {
   getUserProfile,
   updateUserProfile,
 } from '../controllers/userController.js';
+import {getQuiz} from '../controllers/quizController.js'
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();

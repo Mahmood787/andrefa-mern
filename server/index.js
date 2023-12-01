@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 import express from 'express';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import quizRoutes from './routes/quizRoutes.js';
 import cookieParser from 'cookie-parser';
-const port = process.env.PORT || 5000;
+
+const port = process.env.PORT || 4000;
 dotenv.config();
 connectDB();
 const app = express()
 app.use(cors(
     {
-        origin: ["https://andrefa-mern-frontend.vercel.app"],
+        origin: ["https://andrefa-mern-frontend.vercel.app","http://localhost:5173"],
         methods: ["POST", "GET"],
         credentials: true
     }
@@ -21,10 +23,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/api/users', userRoutes);
 
+app.use('/api/quiz', quizRoutes);
 
-// app.get("/", (req, res) => {
-//     res.json("Hello");
-// })
+
+app.get("/", (req, res) => {
+    res.json("Hello");
+})
 
 // app.post('/register', (req, res) => {
 //     const {name, email, password} = req.body;

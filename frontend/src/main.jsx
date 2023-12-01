@@ -1,4 +1,5 @@
 import React from 'react';
+import "./index.css"
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import {
@@ -16,15 +17,26 @@ import LoginScreen from './screens/LoginScreen.jsx';
 import RegisterScreen from './screens/RegisterScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import GameScreen from './screens/GameScreen.jsx';
+import QuizScreen from './screens/QuizScreen.jsx';
+import ShareScreen from './screens/ShareScreen.jsx';
+import MyAnswerScreen from './screens/MyAnswerScreen.jsx';
+import FriendsAnsScreen from './screens/FriendsAnsScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
+      <Route path='/game/quiz' element={<QuizScreen />} />
+      <Route path='/game/quiz/friends/:quizId' element={<FriendsAnsScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/game' element={<GameScreen />} />
+        
+        <Route path='/game/quiz/share/:quizId' element={<ShareScreen />} />
+        <Route path='/game/quiz/myAnswers' element={<MyAnswerScreen />} />
       </Route>
     </Route>
   )
