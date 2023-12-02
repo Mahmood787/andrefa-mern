@@ -1,12 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {  useNavigate, useParams } from "react-router-dom";
-import { useGetQuizQuery } from "../slices/quizApiSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCreateQuizMutation, useGetQuizQuery } from "../slices/quizApiSlice";
 import WrongAudio from "../assets/sounds/wronganswer.mp3";
 import RightAudio from "../assets/sounds/correctanswer.mp3";
+import { v4 as uuid } from "uuid";
+import FullPageLoader from "../components/FullPageLoader";
 const FriendsAnsScreen = React.memo(() => {
-  const navigate = useNavigate()
+  const [createQuiz, { isCreateLoading }] = useCreateQuizMutation();
+  const navigate = useNavigate();
+  const unique_id = uuid();
+  const friendsId = unique_id.slice(0, 8);
   const [step, setStep] = useState(0);
   const [nameError, setNameError] = useState(false);
   const [friendName, setFriendName] = useState("");
@@ -70,27 +75,31 @@ const FriendsAnsScreen = React.memo(() => {
     } else {
       try {
         console.log(formData, "formData");
-        const res = await axios.post(
-          "http://localhost:4000/api/quiz/addFriendAnswer",
-          {
-            userId: quizId,
-            quizId: quizId,
-            friendsAnswers: {
-              friendAnswers: [
-                ...formData,
-                { questionId: questionId, answer: answer, correctAns },
-              ],
-              friendName,
-            },
-          }
-        );
-        navigate("/game/quiz/myAnswers")
+        await createQuiz({
+          userId: quizId,
+          quizId: quizId,
+          friendsAnswers: {
+            friendAnswers: [
+              ...formData,
+              { questionId: questionId, answer: answer, correctAns },
+            ],
+            friendName,
+            friendsId,
+          },
+        });
+        // const res = await axios.post(
+        //   "http://localhost:4000/api/quiz/addFriendAnswer",
+
+        // );
+        navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
       } catch (error) {
         console.log(error, "Quiz not created");
       }
     }
   };
-
+  if(isLoading){
+    return <FullPageLoader />
+  }
   if (pageState === "get_name") {
     return (
       <>

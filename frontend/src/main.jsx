@@ -22,6 +22,7 @@ import QuizScreen from './screens/QuizScreen.jsx';
 import ShareScreen from './screens/ShareScreen.jsx';
 import MyAnswerScreen from './screens/MyAnswerScreen.jsx';
 import FriendsAnsScreen from './screens/FriendsAnsScreen.jsx';
+import CreatorsResultBoard from './screens/CreatorsResultBoard.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,12 +32,13 @@ const router = createBrowserRouter(
       <Route path='/game/quiz/friends/:quizId' element={<FriendsAnsScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
+      <Route path='/game/quiz/myAnswers/:quizId/:friendsId' element={<MyAnswerScreen />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/game' element={<GameScreen />} />
-        
+        <Route path='/game/creator/resultbord' element={<CreatorsResultBoard />} />
         <Route path='/game/quiz/share/:quizId' element={<ShareScreen />} />
-        <Route path='/game/quiz/myAnswers' element={<MyAnswerScreen />} />
+ 
       </Route>
     </Route>
   )

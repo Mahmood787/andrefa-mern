@@ -3,9 +3,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import ShareLink from "../components/ShareLInk";
 import { WhatsappIcon, WhatsappShareButton } from "react-share";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const ShareScreen = () => {
-
+  const navigate = useNavigate()
   const { quizId } = useParams();
   const [copied, setCoppied] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
@@ -47,6 +47,7 @@ const ShareScreen = () => {
       </div>
       <p className="text-center my-4">After sharing, check who has answered:</p>
       <button
+      onClick={() => navigate('/game/creator/resultbord')}
         className="mb-16 w-[80%]  rounded-full  p-2 text-white"
         style={{
           backgroundImage: "linear-gradient(180deg,#00A8FF 0%,#007CFF 100%)",

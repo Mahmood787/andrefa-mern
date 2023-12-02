@@ -6,4 +6,5 @@ export const apiSlice = createApi({
   baseQuery,
   tagTypes: ['User','Quiz'],
   endpoints: (builder) => ({}),
+
 });
