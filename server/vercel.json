@@ -8,7 +8,7 @@
           "src": "/(.*)",
           "dest": "/",
           "headers":{
-            "Access-Control-Allow-Origin":"*"
+            "Access-Control-Allow-Origin":"https://andrefa-mern-frontend-lpu6snqig-mahmood787.vercel.app"
           }
         }
     ]
