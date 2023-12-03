@@ -12,7 +12,7 @@ connectDB();
 const app = express()
 app.use(cors(
     {
-        origin: ["https://andrefa-mern-frontend.vercel.app", "http://localhost:5173"],
+        origin: ["https://andrefa-mern-frontend.vercel.app", "http://localhost:5173","https://andrefa-mern-frontend.vercel.app/"],
         methods: ["POST", "GET"],
         credentials: true
     }
