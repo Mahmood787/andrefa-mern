@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useCreateQuizMutation, useGetQuizQuery } from "../slices/quizApiSlice";
 import SelectionAudio from "../assets/sounds/selection.mp3";
 import FullPageLoader from "../components/FullPageLoader";
-const QuizScreen = () => {
+const QuizCreationScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const { data, error, isLoading } = useGetQuizQuery(userInfo._id);
+  const { data, error, isLoading, isFetching } = useGetQuizQuery(userInfo._id);
 
   const [createQuiz, { isCreateLoading }] = useCreateQuizMutation();
   const [choiceIndex, setChoiceIndex] =useState(null)
@@ -21,19 +21,24 @@ const QuizScreen = () => {
     new Audio(SelectionAudio).play();
   };
   const handleAnswer = async (questionId, answer, index) => {
-    setChoiceIndex(index)
-    setFormData((prev) => {
-      return [...prev, { questionId: questionId, answer: answer }];
-    });
+    
  
     palyAudioSelection()
     if (step <= 8 ) {
+      setChoiceIndex(index)
+    setFormData((prev) => {
+      return [...prev, { questionId: questionId, answer: answer }];
+    });
       setTimeout(() => {
       setStep((prev) => prev + 1);
       setChoiceIndex(null)
     }, 500);
     } else {
       try {
+        setChoiceIndex(index)
+    setFormData((prev) => {
+      return [...prev, { questionId: questionId, answer: answer }];
+    });
        const res = await createQuiz({
         userId: userInfo._id,
         usersName: "test",
@@ -63,9 +68,6 @@ const QuizScreen = () => {
     navigate("/game/quiz/share/"+data._doc.quizId);
   }
  },[data])
- if(isLoading){
-  return <FullPageLoader />
-}
 
   return (
     <div className="mt-10">
@@ -103,7 +105,7 @@ const QuizScreen = () => {
   );
 };
 
-export default QuizScreen;
+export default QuizCreationScreen;
 const initQuestions = [
   {
     questionId: 101,

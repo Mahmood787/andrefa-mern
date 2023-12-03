@@ -2,13 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateQuizMutation, useGetQuizQuery } from "../slices/quizApiSlice";
+import { useUpdateQuizMutation, useGetQuizQuery } from "../slices/quizApiSlice";
 import WrongAudio from "../assets/sounds/wronganswer.mp3";
 import RightAudio from "../assets/sounds/correctanswer.mp3";
 import { v4 as uuid } from "uuid";
 import FullPageLoader from "../components/FullPageLoader";
 const FriendsAnsScreen = React.memo(() => {
-  const [createQuiz, { isCreateLoading }] = useCreateQuizMutation();
+  const [updateQuiz, { isUpdating }] = useUpdateQuizMutation()
   const navigate = useNavigate();
   const unique_id = uuid();
   const friendsId = unique_id.slice(0, 8);
@@ -21,7 +21,7 @@ const FriendsAnsScreen = React.memo(() => {
   const [pageState, setPageState] = useState("get_name");
   const { userInfo } = useSelector((state) => state.auth);
   const { quizId } = useParams();
-  const { data, error, isLoading } = useGetQuizQuery(quizId);
+  const { data, error, isLoading } = useGetQuizQuery(quizId)
   const palyAudioWrong = () => {
     new Audio(WrongAudio).play();
   };
@@ -62,11 +62,12 @@ const FriendsAnsScreen = React.memo(() => {
     } else {
       palyAudioRight();
     }
-    setFormData((prev) => {
-      return [...prev, { questionId: questionId, answer: answer, correctAns }];
-    });
+  
 
     if (step <= 8) {
+      setFormData((prev) => {
+        return [...prev, { questionId: questionId, answer: answer, correctAns }];
+      });
       setTimeout(() => {
         setStep((prev) => prev + 1);
         setCorrectChoice();
@@ -74,8 +75,10 @@ const FriendsAnsScreen = React.memo(() => {
       }, 1000);
     } else {
       try {
-        console.log(formData, "formData");
-        await createQuiz({
+        setFormData((prev) => {
+          return [...prev, { questionId: questionId, answer: answer, correctAns }];
+        });
+       const res = await updateQuiz({
           userId: quizId,
           quizId: quizId,
           friendsAnswers: {
@@ -87,11 +90,12 @@ const FriendsAnsScreen = React.memo(() => {
             friendsId,
           },
         });
+        console.log(res, "RESPONSE)UPDATE_QUIZ")
         // const res = await axios.post(
         //   "http://localhost:4000/api/quiz/addFriendAnswer",
 
         // );
-        navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
+       res.data && navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
       } catch (error) {
         console.log(error, "Quiz not created");
       }

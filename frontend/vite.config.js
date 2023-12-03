@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://andrefa-mern-op5b1bhg8-mahmood787.vercel.app",
+        target: "http://localhost:4000",
         changeOrigin: true,
        
       },

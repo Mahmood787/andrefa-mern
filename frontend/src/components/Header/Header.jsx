@@ -30,18 +30,14 @@ const Header = () => {
       <Navbar  className='hContainer' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>MERN Auth</Navbar.Brand>
+            <Navbar.Brand>Friends</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Text>text</Navbar.Text>
+          
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             
             <Nav className='ms-auto'>
-            <LinkContainer  to='/login'>
-                    <Nav.Link >
-                      <div className='flex gap-1 justify-center items-center'><FaSignInAlt /> <span>Sign In</span></div>
-                    </Nav.Link>
-                  </LinkContainer>
+           
               {userInfo ? (
                 <>
                   <NavDropdown title={userInfo.name} id='username'>
@@ -56,13 +52,17 @@ const Header = () => {
               ) : (
                 <>
                   <LinkContainer to='/login'>
-                    <Nav.Link>
+                    <Nav.Link className='flex'>
+                      <div className='flex items-center gap-2 justify-center'>
                       <FaSignInAlt /> Sign In
+                      </div>
                     </Nav.Link>
                   </LinkContainer>
                   <LinkContainer to='/register'>
                     <Nav.Link>
+                    <div className='flex items-center gap-2 justify-center'>
                       <FaSignOutAlt /> Sign Up
+                      </div>
                     </Nav.Link>
                   </LinkContainer>
                 </>

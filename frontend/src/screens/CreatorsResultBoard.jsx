@@ -7,13 +7,14 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useState } from "react";
 import { WhatsappIcon, WhatsappShareButton } from "react-share";
 import FullPageLoader from "../components/FullPageLoader";
+import useGetQuiz from "./hooks/quiz";
 const CreatorsResultBoard = () => {
   const [copied, setCoppied] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
   console.log(userInfo)
-  const { data, error, isLoading } =  useGetQuizQuery(userInfo._id);
-
-  if(isLoading){
+  const { data, loading, error, refetch } = useGetQuiz('http://localhost:4000/api/quiz/',{userId:userInfo._id});
+  console.log(data, "DATA___")
+  if(loading){
     return <FullPageLoader />
   }
   if(error){
@@ -43,7 +44,7 @@ console.log(data, "DATA from server")
            
             {
              data._doc && data._doc.friendsAnswers.map((d,i) => (
-                <tr>
+                <tr key={i}>
                 <td>{i+1}</td>
                 <td>{d.friendName}</td>
                 <td>{d.friendAnswers.filter((f) => f.correctAns ==true).length}</td>

@@ -3,38 +3,41 @@ import ButtonGreen from "../components/ButtonGreen";
 import { useSelector } from "react-redux";
 import { Table } from "react-bootstrap";
 import {  useNavigate, useParams } from "react-router-dom";
-import { useGetQuizQuery } from "../slices/quizApiSlice";
 import FullPageLoader from "../components/FullPageLoader";
+import useGetQuiz from "./hooks/quiz";
 ;
-const MyAnswerScreen = () => {
+const CreatorAnsScreen = () => {
   const navigate = useNavigate()
   const { quizId, friendsId } = useParams()
   const { userInfo } = useSelector((state) => state.auth);
   console.log(userInfo, "userInfo")
-  const { data, error, isLoading } = useGetQuizQuery(quizId);
+  const { data, loading, error, refetch } = useGetQuiz('http://localhost:4000/api/quiz/',{userId:quizId});
 
-  if(isLoading){
-    return <FullPageLoader />
+  const currentFriendData = data &&  data?._doc?.friendsAnswers?.find((fAns) => fAns?.friendsId == friendsId)
+  const correctAnswersCount =data && currentFriendData?.friendAnswers?.filter(item => item.correctAns === true).length;
+
+  if (loading ) {
+    return <FullPageLoader />;
   }
+
   if(userInfo){
     navigate("/")
   }
-  const currentFriendData = data._doc.friendsAnswers.find((fAns) => fAns.friendsId == friendsId)
-  const correctAnswersCount = currentFriendData.friendAnswers.filter(item => item.correctAns === true).length;
- 
+console.log(currentFriendData, "current friends data")
   return (
     <div>
+      creators answer screen
       <div className="text-center my-4 bg-yellow-100 p-4">
-        <h2 className="">🏆 Congrats, {currentFriendData.friendName} 🏆</h2>
-        <p className=""> You scored {correctAnswersCount} points at 's Challenge </p>
-        <h3 className="">Your Score: {correctAnswersCount}/10</h3>
+        <h2 className="">🏆 Congrats, {currentFriendData && currentFriendData.friendName} 🏆</h2>
+        <p className=""> You scored {correctAnswersCount && correctAnswersCount} points at 's Challenge </p>
+        <h3 className="">Your Score: {correctAnswersCount && correctAnswersCount}/10</h3>
         <GaugeChart
           className="text-black"
           id="gauge-chart2"
           nrOfLevels={30}
           colors={["#FF5F6D", "#FFC371"]}
           arcWidth={0.3}
-          percent={correctAnswersCount/10}
+          percent={correctAnswersCount && correctAnswersCount/10}
           style={{
             width: "20%",
             margin: "auto",
@@ -47,13 +50,13 @@ const MyAnswerScreen = () => {
           Now it is your turn, create your own Dare and share with friends!
         </p>
         <ButtonGreen
-          handleClick={() => console.log()}
+          handleClick={() => navigate('/')}
           text="Create your Quiz!"
         />
       </div>
       <div className="text-center my-4 bg-yellow-100 p-4">
         <h5 className="font-bold">
-          Friendboard of <span className="text-blue-700 capitalize">{data._doc.usersName}</span>
+          Friendboard of <span className="text-blue-700 capitalize">{data && data._doc && data._doc.usersName}</span>
         </h5>
         <div>
           <Table striped bordered hover>
@@ -67,7 +70,7 @@ const MyAnswerScreen = () => {
             <tbody>
            
             {
-             data._doc && data._doc.friendsAnswers.map((d,i) => (
+             data && data._doc && data._doc.friendsAnswers.map((d,i) => (
                 <tr>
                 <td>{i+1}</td>
                 <td>{d.friendName}</td>
@@ -80,7 +83,7 @@ const MyAnswerScreen = () => {
         </div>
         <h5 className="font-bold my-4">❤️ ❤️ Did you like it?</h5>
         <ButtonGreen
-          handleClick={() => console.log()}
+          handleClick={() => navigate('/')}
           text="Create your Quiz!"
         />
       </div>
@@ -88,4 +91,4 @@ const MyAnswerScreen = () => {
   );
 };
 
-export default MyAnswerScreen;
+export default CreatorAnsScreen;

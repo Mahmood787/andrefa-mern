@@ -6,14 +6,21 @@ export const quizApiSlice = apiSlice.injectEndpoints({
     getQuiz: builder.query({
       query: (data) => ({
         url: `${USERS_URL}`,
-        method: 'GET',
-        params: { userId:data},
+        method: "GET",
+        params: { userId: data },
       }),
     }),
     createQuiz: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}`,
-        method: 'POST',
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateQuiz: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/addFriendAnswer`,
+        method: "POST",
         body: data,
       }),
     }),
@@ -23,4 +30,5 @@ export const quizApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetQuizQuery,
   useCreateQuizMutation,
+  useUpdateQuizMutation
 } = quizApiSlice;
