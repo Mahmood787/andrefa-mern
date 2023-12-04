@@ -9,7 +9,7 @@ import { initQuestions } from "../utils/utils";
 const QuizCreationScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { data, error, isLoading, isFetching } = useGetQuizQuery(userInfo._id);
-
+const [btnDisabled, setBtnDisabled] = useState(false)
   const [createQuiz, { isCreateLoading }] = useCreateQuizMutation();
   const [choiceIndex, setChoiceIndex] = useState(null);
   const [step, setStep] = useState(0);
@@ -22,6 +22,10 @@ const QuizCreationScreen = () => {
     new Audio(SelectionAudio).play();
   };
   const handleAnswer = async (questionId, answer, index) => {
+    if(btnDisabled){
+      return
+    }
+    setBtnDisabled(true)
     palyAudioSelection();
     if (step <= 8) {
       setChoiceIndex(index);
@@ -35,9 +39,7 @@ const QuizCreationScreen = () => {
     } else {
       try {
         setChoiceIndex(index);
-        setFormData((prev) => {
-          return [...prev, { questionId: questionId, answer: answer }];
-        });
+        
         const res = await createQuiz({
           userId: userInfo._id,
           usersName: "test",
@@ -50,6 +52,9 @@ const QuizCreationScreen = () => {
         console.log(error, "Quiz not created");
       }
     }
+    setTimeout(() => {
+      setBtnDisabled(false);
+    }, 1000);
   };
   const [totalSkiped, setTotalSkipped] = useState(1);
   const handleSkip = () => {
@@ -105,10 +110,13 @@ const QuizCreationScreen = () => {
       </div>
       <div className="flex flex-wrap justify-center gap-4">
         {tenQuestions[step] && tenQuestions[step].data.map((d, i) => (
-          <div
+          <button
+          disabled={btnDisabled}
             key={i}
-            onClick={() => {
+            onClick={(event) =>{
+              event.currentTarget.disabled = true;
               step <10 ?  handleAnswer(tenQuestions[step].questionId, d.name, i) : null
+              event.currentTarget.disabled = false;
             }
              
             }
@@ -118,7 +126,7 @@ const QuizCreationScreen = () => {
           >
             <div className="text-[3rem]">{d.icon}</div>
             <div>{d.name}</div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

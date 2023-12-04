@@ -265,19 +265,7 @@ export const initQuestions = [
       ],
     },
   
-    {
-      questionId: 113,
-      question:
-        "What is something that you have always wanted to try but haven't yet?",
-      data: [
-        { name: "Skydiving", icon: "🪂" },
-        { name: "Move to a Different Country", icon: "🌎" },
-        { name: "Learn a Musical Instrument", icon: "🎸" },
-        { name: "Write a Book", icon: "📝" },
-        { name: "Camping in the Wild", icon: "🏕" },
-        { name: "Become Famous", icon: "🤩" },
-      ],
-    },
+
     {
       questionId: 114,
       question:

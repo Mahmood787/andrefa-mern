@@ -21,7 +21,8 @@ const FriendsAnsScreen = React.memo(() => {
   const [correctChoice, setCorrectChoice] = useState(null);
   const [wrongChoiceIndex, setWrongChoiceIndex] = useState(null);
   const [pageState, setPageState] = useState("get_name");
-
+  const [btnDisabled, setBtnDisabled] = useState(false)
+console.log(btnDisabled, "btn disabled")
   const { quizId } = useParams();
   const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:quizId});
 
@@ -48,6 +49,11 @@ const FriendsAnsScreen = React.memo(() => {
   };
 
   const handleAnswer = async (questionId, answer, index) => {
+    if(btnDisabled){
+      return
+    }
+    setBtnDisabled(true)
+  
     const correctAns =
       data &&
       data._doc.myAnswers.some((myAnswer) => {
@@ -80,13 +86,8 @@ const FriendsAnsScreen = React.memo(() => {
       }, 1000);
     } else {
       try {
-        setFormData((prev) => {
-          return [
-            ...prev,
-            { questionId: questionId, answer: answer, correctAns },
-          ];
-        });
-        const res = await updateQuiz({
+      
+        const res =  step <10 && await updateQuiz({
           userId: quizId,
           quizId: quizId,
           friendsAnswers: {
@@ -106,7 +107,11 @@ const FriendsAnsScreen = React.memo(() => {
       } catch (error) {
       }
     }
+    setTimeout(() => {
+      setBtnDisabled(false);
+    }, 1000);
   };
+
   if (loading) {
     return <FullPageLoader />;
   }
@@ -158,14 +163,17 @@ const FriendsAnsScreen = React.memo(() => {
         <h3 className="my-4">{newQuestionData[step] && newQuestionData[step].question}</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-4">
-        {initQuestions[step].data.map((d, i) => {
+        {newQuestionData[step] && newQuestionData[step].data.map((d, i) => {
       
           return (
-            <div
+            <button
               key={i}
-            
-              onClick={() =>{
-                step <10 ?  handleAnswer(initQuestions[step].questionId, d.name, i) : null
+              disabled={btnDisabled}
+              onClick={(event) =>{
+                event.currentTarget.disabled = true;
+                step <10 ?  handleAnswer(newQuestionData[step].questionId, d.name, i) : null
+              event.currentTarget.disabled = false;
+
               }
               }
               className={`rounded-lg p-4 text-center shadow-lg ${
@@ -178,7 +186,7 @@ const FriendsAnsScreen = React.memo(() => {
             >
               <div className="text-[3rem]">{d.icon}</div>
               <div>{d.name}</div>
-            </div>
+            </button>
           );
         })}
       </div>

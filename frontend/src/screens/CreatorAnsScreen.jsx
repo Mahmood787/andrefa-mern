@@ -19,28 +19,27 @@ const CreatorAnsScreen = () => {
     return <FullPageLoader />;
   }
 
-  if(userInfo){
-    navigate("/")
-  }
+
   return (
     <div>
-      creators answer screen
+    
       <div className="text-center my-4 bg-yellow-100 p-4">
         <h2 className="">🏆 Congrats, {currentFriendData && currentFriendData.friendName} 🏆</h2>
         <p className=""> You scored {correctAnswersCount && correctAnswersCount} points at 's Challenge </p>
         <h3 className="">Your Score: {correctAnswersCount && correctAnswersCount}/10</h3>
         <GaugeChart
-          className="text-black"
-          id="gauge-chart2"
+          className="text-black p-2 "
+          id="gauge-chart1"
           nrOfLevels={30}
           colors={["#FF5F6D", "#FFC371"]}
           arcWidth={0.3}
           percent={correctAnswersCount && correctAnswersCount/10}
           style={{
-            width: "20%",
+            borderRadius:"10px",
+            width: "35%",
             margin: "auto",
             color: "black",
-            background: "gray",
+            background: "#7888c0",
           }}
         />
         <p>
