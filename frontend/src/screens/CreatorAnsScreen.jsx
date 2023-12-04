@@ -11,7 +11,7 @@ const CreatorAnsScreen = () => {
   const { quizId, friendsId } = useParams()
   const { userInfo } = useSelector((state) => state.auth);
   console.log(userInfo, "userInfo")
-  const { data, loading, error, refetch } = useGetQuiz('http://localhost:4000/api/quiz/',{userId:quizId});
+  const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:quizId});
 
   const currentFriendData = data &&  data?._doc?.friendsAnswers?.find((fAns) => fAns?.friendsId == friendsId)
   const correctAnswersCount =data && currentFriendData?.friendAnswers?.filter(item => item.correctAns === true).length;

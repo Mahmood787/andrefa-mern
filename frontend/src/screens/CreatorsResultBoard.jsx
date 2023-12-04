@@ -12,7 +12,7 @@ const CreatorsResultBoard = () => {
   const [copied, setCoppied] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
   console.log(userInfo)
-  const { data, loading, error, refetch } = useGetQuiz('http://localhost:4000/api/quiz/',{userId:userInfo._id});
+  const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:userInfo._id});
   console.log(data, "DATA___")
   if(loading){
     return <FullPageLoader />
