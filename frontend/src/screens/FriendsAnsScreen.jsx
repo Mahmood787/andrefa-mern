@@ -7,8 +7,9 @@ import WrongAudio from "../assets/sounds/wronganswer.mp3";
 import RightAudio from "../assets/sounds/correctanswer.mp3";
 import { v4 as uuid } from "uuid";
 import FullPageLoader from "../components/FullPageLoader";
+import { initQuestions } from "../utils/utils";
 const FriendsAnsScreen = React.memo(() => {
-  const [updateQuiz, { isUpdating }] = useUpdateQuizMutation()
+  const [updateQuiz, { isUpdating }] = useUpdateQuizMutation();
   const navigate = useNavigate();
   const unique_id = uuid();
   const friendsId = unique_id.slice(0, 8);
@@ -21,7 +22,7 @@ const FriendsAnsScreen = React.memo(() => {
   const [pageState, setPageState] = useState("get_name");
   const { userInfo } = useSelector((state) => state.auth);
   const { quizId } = useParams();
-  const { data, error, isLoading } = useGetQuizQuery(quizId)
+  const { data, error, isLoading } = useGetQuizQuery(quizId);
   const palyAudioWrong = () => {
     new Audio(WrongAudio).play();
   };
@@ -62,11 +63,13 @@ const FriendsAnsScreen = React.memo(() => {
     } else {
       palyAudioRight();
     }
-  
 
     if (step <= 8) {
       setFormData((prev) => {
-        return [...prev, { questionId: questionId, answer: answer, correctAns }];
+        return [
+          ...prev,
+          { questionId: questionId, answer: answer, correctAns },
+        ];
       });
       setTimeout(() => {
         setStep((prev) => prev + 1);
@@ -76,9 +79,12 @@ const FriendsAnsScreen = React.memo(() => {
     } else {
       try {
         setFormData((prev) => {
-          return [...prev, { questionId: questionId, answer: answer, correctAns }];
+          return [
+            ...prev,
+            { questionId: questionId, answer: answer, correctAns },
+          ];
         });
-       const res = await updateQuiz({
+        const res = await updateQuiz({
           userId: quizId,
           quizId: quizId,
           friendsAnswers: {
@@ -90,19 +96,19 @@ const FriendsAnsScreen = React.memo(() => {
             friendsId,
           },
         });
-        console.log(res, "RESPONSE)UPDATE_QUIZ")
+        console.log(res, "RESPONSE)UPDATE_QUIZ");
         // const res = await axios.post(
         //   "http://localhost:4000/api/quiz/addFriendAnswer",
 
         // );
-       res.data && navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
+        res.data && navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
       } catch (error) {
         console.log(error, "Quiz not created");
       }
     }
   };
-  if(isLoading){
-    return <FullPageLoader />
+  if (isLoading) {
+    return <FullPageLoader />;
   }
   if (pageState === "get_name") {
     return (
@@ -148,7 +154,7 @@ const FriendsAnsScreen = React.memo(() => {
       <div className="text-center my-10">
         <h3 className="my-4">{newQuestionData[step].question}</h3>
       </div>
-      <div className="flex flex-wrap justify-start gap-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {initQuestions[step].data.map((d, i) => {
           console.log(correctChoice, "Correct choice");
           console.log(d.name, "d.name from");
@@ -177,306 +183,4 @@ const FriendsAnsScreen = React.memo(() => {
 });
 
 export default FriendsAnsScreen;
-const initQuestions = [
-  {
-    questionId: 101,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 102,
-    question:
-      "If you could live in any time period, which one would you choose?",
-    data: [
-      {
-        name: "Ancient Greece",
-        icon: "🇬🇷",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 103,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 104,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 105,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 106,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 107,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 108,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 109,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-  {
-    questionId: 110,
-    question: "How do you like to indulge?",
-    data: [
-      {
-        name: "Snacks",
-        icon: "🍫",
-      },
-      {
-        name: "Drinking alcohol",
-        icon: "🍻",
-      },
-      {
-        name: "Shopping",
-        icon: "🛍",
-      },
-      {
-        name: "Relaxing in a spa",
-        icon: "🧖",
-      },
-      {
-        name: "Video games",
-        icon: "🎮",
-      },
-      {
-        name: "Taking a nap",
-        icon: "💤",
-      },
-    ],
-  },
-];
+
