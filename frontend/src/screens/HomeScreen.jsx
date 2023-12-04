@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 const HomeScreen = () => {
   const navigate = useNavigate()
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo, "user info")
   useEffect(() => {
     if (userInfo) {
       navigate('/game');

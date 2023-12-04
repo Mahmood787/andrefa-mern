@@ -12,12 +12,10 @@ const useGetQuiz = (url, params) => {
       try {
         // Set loading to true when the request starts
         setLoading(true);
-console.log("I ran")
         // Make the GET request using Axios
         const response = await axios.get(url, {
             params: params,
         });
-console.log(response, "RES_USEGT")
         // Set the data when the request is successful
         setData(response.data);
 

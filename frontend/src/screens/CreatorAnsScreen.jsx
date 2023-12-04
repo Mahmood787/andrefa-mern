@@ -10,7 +10,6 @@ const CreatorAnsScreen = () => {
   const navigate = useNavigate()
   const { quizId, friendsId } = useParams()
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo, "userInfo")
   const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:quizId});
 
   const currentFriendData = data &&  data?._doc?.friendsAnswers?.find((fAns) => fAns?.friendsId == friendsId)
@@ -23,7 +22,6 @@ const CreatorAnsScreen = () => {
   if(userInfo){
     navigate("/")
   }
-console.log(currentFriendData, "current friends data")
   return (
     <div>
       creators answer screen

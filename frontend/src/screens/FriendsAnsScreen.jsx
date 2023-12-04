@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUpdateQuizMutation, useGetQuizQuery } from "../slices/quizApiSlice";
+import { useUpdateQuizMutation } from "../slices/quizApiSlice";
 import WrongAudio from "../assets/sounds/wronganswer.mp3";
 import RightAudio from "../assets/sounds/correctanswer.mp3";
 import { v4 as uuid } from "uuid";
 import FullPageLoader from "../components/FullPageLoader";
 import { initQuestions } from "../utils/utils";
+import useGetQuiz from "./hooks/quiz";
 const FriendsAnsScreen = React.memo(() => {
   const [updateQuiz, { isUpdating }] = useUpdateQuizMutation();
   const navigate = useNavigate();
@@ -20,9 +21,10 @@ const FriendsAnsScreen = React.memo(() => {
   const [correctChoice, setCorrectChoice] = useState(null);
   const [wrongChoiceIndex, setWrongChoiceIndex] = useState(null);
   const [pageState, setPageState] = useState("get_name");
-  const { userInfo } = useSelector((state) => state.auth);
+
   const { quizId } = useParams();
-  const { data, error, isLoading } = useGetQuizQuery(quizId);
+  const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:quizId});
+
   const palyAudioWrong = () => {
     new Audio(WrongAudio).play();
   };
@@ -96,18 +98,16 @@ const FriendsAnsScreen = React.memo(() => {
             friendsId,
           },
         });
-        console.log(res, "RESPONSE)UPDATE_QUIZ");
         // const res = await axios.post(
         //   "http://localhost:4000/api/quiz/addFriendAnswer",
 
         // );
         res.data && navigate(`/game/quiz/myAnswers/${quizId}/${friendsId}`);
       } catch (error) {
-        console.log(error, "Quiz not created");
       }
     }
   };
-  if (isLoading) {
+  if (loading) {
     return <FullPageLoader />;
   }
   if (pageState === "get_name") {
@@ -133,8 +133,11 @@ const FriendsAnsScreen = React.memo(() => {
       </>
     );
   }
-  if (isLoading) {
+  if (loading) {
     return <h2>Loading..</h2>;
+  }
+  if(error){
+    navigate('/')
   }
   return (
     <div className="mt-10">
@@ -152,17 +155,18 @@ const FriendsAnsScreen = React.memo(() => {
           ))}
       </div>
       <div className="text-center my-10">
-        <h3 className="my-4">{newQuestionData[step].question}</h3>
+        <h3 className="my-4">{newQuestionData[step] && newQuestionData[step].question}</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-4">
         {initQuestions[step].data.map((d, i) => {
-          console.log(correctChoice, "Correct choice");
-          console.log(d.name, "d.name from");
+      
           return (
             <div
               key={i}
-              onClick={() =>
-                handleAnswer(initQuestions[step].questionId, d.name, i)
+            
+              onClick={() =>{
+                step <10 ?  handleAnswer(initQuestions[step].questionId, d.name, i) : null
+              }
               }
               className={`rounded-lg p-4 text-center shadow-lg ${
                 correctChoice == d.name
