@@ -13,16 +13,16 @@ const QuizCreationScreen = () => {
   const [choiceIndex, setChoiceIndex] =useState(null)
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState([]);
+  const [tenQuestions, setTenQuestions] = useState(initQuestions.slice(0, 10));
+
   const navigate = useNavigate();
 
 
-   
+
   const palyAudioSelection = () => {
     new Audio(SelectionAudio).play();
   };
   const handleAnswer = async (questionId, answer, index) => {
-    
- 
     palyAudioSelection()
     if (step <= 8 ) {
       setChoiceIndex(index)
@@ -60,9 +60,26 @@ const QuizCreationScreen = () => {
       }
     }
   };
+const [totalSkiped, setTotalSkipped] = useState(1)
+const handleSkip = () => {
+  // Update the state using setTenQuestions
+  setTenQuestions(prevQuestions => {
+    // Make a copy of the previous state
+    const newQuestions = [...prevQuestions];
 
+    // Update the question at the current step
+    newQuestions[step] = initQuestions[newQuestions.length - 1 + totalSkiped];
+
+    // Log the updated questions
+    console.log(newQuestions, "ten");
+
+    // Return the updated state
+    return newQuestions;
+  });
+      // Update the total skipped questions
+      setTotalSkipped(prevTotalSkipped => prevTotalSkipped + 1);
+    };
    // if quiz already exist ---> taken to share quiz screen
-
  useEffect(() => {
   if (data) {
     navigate("/game/quiz/share/"+data._doc.quizId);
@@ -72,7 +89,7 @@ const QuizCreationScreen = () => {
   return (
     <div className="mt-10">
       <div className="flex justify-between">
-        {initQuestions.map((d, i) => (
+        {tenQuestions.map((d, i) => (
           <div
             key={i}
             className={`${
@@ -84,16 +101,16 @@ const QuizCreationScreen = () => {
         ))}
       </div>
       <div className="text-center my-10">
-        <h3 className="my-4">{initQuestions[step].question}</h3>
-        <button className="rounded-full px-10 py-1 text-[1rem] bg-gray-200">
+        <h3 className="my-4">{tenQuestions[step].question}</h3>
+        <button onClick={handleSkip} className="rounded-full px-10 py-1 text-[1rem] bg-gray-200">
           Skip question
         </button>
       </div>
       <div className="flex flex-wrap justify-start gap-4">
-        {initQuestions[step].data.map((d, i) => (
+        {tenQuestions[step].data.map((d, i) => (
           <div
             key={i}
-            onClick={() => handleAnswer(initQuestions[step].questionId, d.name, i)}
+            onClick={() => handleAnswer(tenQuestions[step].questionId, d.name, i)}
             className={`rounded-lg p-4 text-center shadow-lg ${choiceIndex === i ? "bg-green-400":"bg-white"} min-w-[300px]`}
           >
             <div className="text-[3rem]">{d.icon}</div>
@@ -381,6 +398,66 @@ const initQuestions = [
   {
     questionId: 110,
     question: "last question?",
+    data: [
+      {
+        name: "Snacks",
+        icon: "🍫",
+      },
+      {
+        name: "Drinking alcohol",
+        icon: "🍻",
+      },
+      {
+        name: "Shopping",
+        icon: "🛍",
+      },
+      {
+        name: "Relaxing in a spa",
+        icon: "🧖",
+      },
+      {
+        name: "Video games",
+        icon: "🎮",
+      },
+      {
+        name: "Taking a nap",
+        icon: "💤",
+      },
+    ],
+  },
+  {
+    questionId: 111,
+    question: "Leventh question ?",
+    data: [
+      {
+        name: "Snacks",
+        icon: "🍫",
+      },
+      {
+        name: "Drinking alcohol",
+        icon: "🍻",
+      },
+      {
+        name: "Shopping",
+        icon: "🛍",
+      },
+      {
+        name: "Relaxing in a spa",
+        icon: "🧖",
+      },
+      {
+        name: "Video games",
+        icon: "🎮",
+      },
+      {
+        name: "Taking a nap",
+        icon: "💤",
+      },
+    ],
+  },
+  {
+    questionId: 120,
+    question: "Twelveth question?",
     data: [
       {
         name: "Snacks",
