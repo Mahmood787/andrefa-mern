@@ -27,7 +27,7 @@ const CreatorsResultBoard = () => {
       <div className="text-center my-4 bg-yellow-100 p-4">
         <h5 className="font-bold">
           Friendboard of{" "}
-          <span className="text-blue-700 capitalize">{userInfo.usersName}</span>
+          <span className="text-blue-700 capitalize">{userInfo.name}</span>
         </h5>
         <div>
           <Table striped bordered hover>
