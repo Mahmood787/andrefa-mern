@@ -4,7 +4,7 @@ import express from 'express';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'; 
 
 const port = process.env.PORT || 4000;
 dotenv.config();
@@ -12,7 +12,7 @@ connectDB();
 const app = express()
 app.use(cors(
     {
-        origin: ["https://andrefa-mern-frontend.vercel.app", "http://localhost:5173","https://andrefa-mern-frontend.vercel.app/"],
+        origin: ["https://andrefa-mern-frontend.vercel.app", "https://andrefa-mern.vercel.app", "http://localhost:5173","https://andrefa-mern-frontend.vercel.app/"],
         methods: ["POST", "GET"],
         credentials: true
     }
