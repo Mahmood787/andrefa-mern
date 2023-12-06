@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import HeroImg from '../assets/heroIImage.png'
 const GameScreen = () => {
   const navigate = useNavigate();
-  const [nameError, setNameError] = useState(false);
-  const [usersName, setUserName] = useState("");
-  const handleChange = (e) => {
-    setUserName(e.target.value && e.target.value);
-    setNameError(false);
-  };
+
 
   const handleClick = () => {
     navigate("/game/quiz");
@@ -19,7 +14,7 @@ const GameScreen = () => {
       <div className="text-center"> ✨ Friends Challenge 2023 ✨</div>
       <div className="flex flex-col items-center justify-center my-4">
         <img
-          src="https://vivatok.com/de23/images/friends23_herob.png"
+          src={HeroImg}
           className=" img-fluid"
           alt="Responsive image"
         />
@@ -48,8 +43,7 @@ const GameScreen = () => {
           <p>Check the answers</p>
         </div>
         <div className="m-auto">
-          {/* <input onChange={handleChange} type="text" placeholder="Your name" className="p-2 w-full my-2 border-1 border-gray-200 text-center text-[1.2rem]" />
-        {nameError && (<p className="text-red-600 text-center">Please fill in your name</p>) } */}
+         
           <button
             onClick={handleClick}
             className="text-center rounded-full text-white bg-green-500 w-[90%] p-3 mx-[5%] my-2 items-center"

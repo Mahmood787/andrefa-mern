@@ -167,7 +167,7 @@ export const initQuestions = [
     },
     {
       questionId: 107,
-      question: "If you could be any fictional character, who would you be?",
+      question: "If you could be any fictional character, who would that be?",
       data: [
         {
           name: " Harry Potter",

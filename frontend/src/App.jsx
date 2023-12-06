@@ -4,10 +4,16 @@ import { Link, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header/Header';
-
+import { Helmet } from 'react-helmet';
 const App = () => {
   return (
     <>
+       <Helmet>
+                <meta charSet="utf-8" />
+                <title>✨ Friends Challenge 2023 ✨  </title>
+                <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16" />
+                <link rel="canonical" href={import.meta.env.BASE_URL} />
+            </Helmet>
       <div className="flex flex-col">
       <Header />
       <ToastContainer />

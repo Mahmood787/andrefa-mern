@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import Hero from '../components/Hero';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import HeroImg from '../assets/heroIImage.png'
 const HomeScreen = () => {
   const navigate = useNavigate()
   const { userInfo } = useSelector((state) => state.auth);
@@ -16,7 +16,7 @@ const HomeScreen = () => {
     <div className="text-center"> ✨ Friends Challenge 2023 ✨</div>
       <div className="flex flex-col items-center justify-center my-4">
         <img
-          src="https://vivatok.com/de23/images/friends23_herob.png"
+          src={HeroImg}
           className=" img-fluid"
           alt="Responsive image"
         />

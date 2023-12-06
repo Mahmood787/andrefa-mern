@@ -31,7 +31,7 @@ const router = createBrowserRouter(
       <Route index={true} path='/' element={<HomeScreen />} />
       <Route path='/contact' element={<Contact />} />
       <Route path='/game/quiz' element={<QuizCreationScreen />} />
-      <Route path='/game/quiz/friends/:quizId' element={<FriendsAnsScreen />} />
+      <Route path='/quiz/:quizId' element={<FriendsAnsScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/game/quiz/myAnswers/:quizId/:friendsId' element={<CreatorAnsScreen />} />

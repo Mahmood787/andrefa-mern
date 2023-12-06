@@ -42,7 +42,7 @@ const [btnDisabled, setBtnDisabled] = useState(false)
         
         const res = await createQuiz({
           userId: userInfo._id,
-          usersName: "test",
+          usersName: userInfo.name,
           quizId: userInfo._id,
           myAnswers: [...formData, { questionId: questionId, answer: answer }],
         });
@@ -84,7 +84,7 @@ const [btnDisabled, setBtnDisabled] = useState(false)
     }
   }, [data]);
 
-  console.log(step, "STEP")
+
   return (
     <div className="mt-10">
       <div className="flex justify-between">

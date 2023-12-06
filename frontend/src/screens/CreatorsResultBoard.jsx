@@ -64,7 +64,7 @@ const CreatorsResultBoard = () => {
         <h4 className="">👇👇👇👇</h4>
         <WhatsappShareButton
           url={
-            window.location.origin + "/game/quiz/friends/" + data._doc.quizId
+            window.location.origin + "/quiz/" + data._doc.quizId
           }
           className=" my-4 text-white  rounded-md w-full flex justify-center items-center gap-4"
           style={{ background: "#1cb06d", fontSize: "1.8rem" }}
@@ -77,12 +77,12 @@ const CreatorsResultBoard = () => {
           onChange={() => null}
           type="text"
           value={
-            window.location.origin + "/game/quiz/friends/" + data._doc.quizId
+            window.location.origin + "/quiz/" + data._doc.quizId
           }
         />
         <CopyToClipboard
           text={
-            window.location.origin + "/game/quiz/friends/" + data._doc.quizId
+            window.location.origin + "/quiz/" + data._doc.quizId
           }
           onCopy={() => setCoppied(true)}
         >
@@ -91,7 +91,7 @@ const CreatorsResultBoard = () => {
           </button>
         </CopyToClipboard>
       </div>
-      <ShareLink />
+      <ShareLink quizId={data._doc.quizId}/>
     </div>
   );
 };

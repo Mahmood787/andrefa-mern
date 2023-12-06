@@ -9,7 +9,9 @@ import { v4 as uuid } from "uuid";
 import FullPageLoader from "../components/FullPageLoader";
 import { initQuestions } from "../utils/utils";
 import useGetQuiz from "./hooks/quiz";
+import { capitalize } from "lodash";
 const FriendsAnsScreen = React.memo(() => {
+  
   const [updateQuiz, { isUpdating }] = useUpdateQuizMutation();
   const navigate = useNavigate();
   const unique_id = uuid();
@@ -22,7 +24,7 @@ const FriendsAnsScreen = React.memo(() => {
   const [wrongChoiceIndex, setWrongChoiceIndex] = useState(null);
   const [pageState, setPageState] = useState("get_name");
   const [btnDisabled, setBtnDisabled] = useState(false)
-console.log(btnDisabled, "btn disabled")
+
   const { quizId } = useParams();
   const { data, loading, error, refetch } = useGetQuiz(import.meta.env.VITE_BACKEND_URL+"/api/quiz/",{userId:quizId});
 
@@ -112,16 +114,19 @@ console.log(btnDisabled, "btn disabled")
     }, 1000);
   };
 
-  if (loading) {
+  if (loading || isUpdating) {
     return <FullPageLoader />;
   }
   if (pageState === "get_name") {
+  
     return (
       <>
         <div className="m-auto">
+        <h2 className="text-black mt-10 text-center">You are answering a quiz that was created by <span className="font-semibold capitalize text-blue-900"> {data && data._doc.usersName}</span></h2>
           <input
             onChange={handleChange}
             type="text"
+            required
             placeholder="Your name"
             className="p-2 w-full my-2 border-1 border-gray-200 text-center text-[1.2rem]"
           />
@@ -129,7 +134,13 @@ console.log(btnDisabled, "btn disabled")
             <p className="text-red-600 text-center">Please fill in your name</p>
           )}
           <button
-            onClick={() => setPageState("form_started")}
+            onClick={() => {
+              if(!friendName){
+                setNameError(true);
+                return
+              }
+              setPageState("form_started")
+            }}
             className="text-center rounded-full text-white bg-green-500 w-[90%] p-3 mx-[5%] my-2 items-center"
           >
             <span>Start</span> <span>👉</span>
@@ -146,6 +157,7 @@ console.log(btnDisabled, "btn disabled")
   }
   return (
     <div className="mt-10">
+     
       <div className="flex justify-between">
         {newQuestionData.length > 1 &&
           newQuestionData.map((d, i) => (
@@ -160,7 +172,7 @@ console.log(btnDisabled, "btn disabled")
           ))}
       </div>
       <div className="text-center my-10">
-        <h3 className="my-4">{newQuestionData[step] && newQuestionData[step].question}</h3>
+        <h3 className="my-4">{newQuestionData[step] && newQuestionData[step].question.replace(' you ',` ${ capitalize(data._doc.usersName) } `).replace(' your ', " his ")}</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-4">
         {newQuestionData[step] && newQuestionData[step].data.map((d, i) => {
