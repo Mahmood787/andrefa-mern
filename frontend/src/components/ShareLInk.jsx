@@ -68,7 +68,7 @@ const ShareLink = ({ quizId }) => {
         </TwitterShareButton>
         <button
           onClick={handleShow}
-          className="text-white  rounded-md col-span-1 flex justify-center items-center gap-4"
+          className="py-2 text-white  rounded-md col-span-1 flex justify-center items-center gap-4"
           style={{ background: "#f1db2f", fontSize: "1.8rem" }}
         >
           <FaTiktok className="w-[27px] rounded-full bg-black p-1" />

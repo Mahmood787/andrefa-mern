@@ -1,12 +1,13 @@
-import ButtonGreen from "../components/ButtonGreen";
-import { useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
-import { useGetQuizQuery } from "../slices/quizApiSlice";
-import ShareLink from "../components/ShareLInk";
-import CopyToClipboard from "react-copy-to-clipboard";
 import { useState } from "react";
+import { Image, Table } from "react-bootstrap";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useSelector } from "react-redux";
 import { WhatsappIcon, WhatsappShareButton } from "react-share";
+import Medal1 from "../assets/medalha11.png";
+import Medal2 from "../assets/medalha22.png";
+import Medal3 from "../assets/medalha33.png";
 import FullPageLoader from "../components/FullPageLoader";
+import ShareLink from "../components/ShareLInk";
 import useGetQuiz from "./hooks/quiz";
 const CreatorsResultBoard = () => {
   const [copied, setCoppied] = useState(false);
@@ -39,20 +40,46 @@ const CreatorsResultBoard = () => {
               </tr>
             </thead>
             <tbody>
-              {data._doc &&
-                data._doc.friendsAnswers.map((d, i) => (
-                  <tr key={i}>
-                    <td>{i + 1}</td>
-                    <td>{d.friendName}</td>
-                    <td>
-                      {
-                        d.friendAnswers.filter((f) => f.correctAns == true)
+                {data._doc &&
+                  data._doc.friendsAnswers
+                    .sort(
+                      (a, b) =>
+                        b.friendAnswers.filter((f) => f.correctAns == true)
+                          .length -
+                        a.friendAnswers.filter((f) => f.correctAns == true)
                           .length
-                      }
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
+                    )
+                    .map((d, i) => (
+                      <tr key={i}>
+                        {i === 0 && (
+                          <td className="flex justify-center">
+                            {" "}
+                            <Image src={Medal1} alt="medal" />
+                          </td>
+                        )}
+                        {i === 1 && (
+                          <td className="flex justify-center">
+                            {" "}
+                            <Image src={Medal2} alt="medal" />
+                          </td>
+                        )}
+                        {i === 2 && (
+                          <td className="flex justify-center">
+                            {" "}
+                            <Image src={Medal3} alt="medal" />
+                          </td>
+                        )}
+                        {i>2 && (<td></td>)}
+                        <td className="capitalize">{d.friendName}</td>
+                        <td>
+                          {
+                            d.friendAnswers.filter((f) => f.correctAns == true)
+                              .length
+                          }
+                        </td>
+                      </tr>
+                    ))}
+              </tbody>
           </Table>
           {data._doc.friendsAnswers.length < 1 && <p>No answer yet.</p>}
         </div>
